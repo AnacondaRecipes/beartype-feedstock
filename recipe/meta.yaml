@@ -32,6 +32,7 @@ test:
     - conftest.py
     - beartype_test
   commands:
+	# test skipped because of https://github.com/beartype/beartype/issues/620
     - pytest beartype_test --ignore="beartype_test/a00_unit/a00_core/test_a90_typing.py"
     - pip check
 
