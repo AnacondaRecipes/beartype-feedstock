@@ -13,26 +13,28 @@ source:
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
-  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python
     - hatchling >=1.14.0
     - pip
   run:
-    - python >={{ python_min }}
+    - python
 
 test:
   requires:
     - pytest
-    - python {{ python_min }}
+    - python
+    - pip
   source_files:
     - conftest.py
     - beartype_test
   commands:
-    - pytest beartype_test
+	# test skipped because of https://github.com/beartype/beartype/issues/620
+    - pytest beartype_test --ignore="beartype_test/a00_unit/a00_core/test_a90_typing.py"
+    - pip check
 
 about:
   home: https://github.com/beartype/beartype
