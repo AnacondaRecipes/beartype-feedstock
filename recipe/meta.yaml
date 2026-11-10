@@ -1,6 +1,6 @@
 {% set name = "beartype" %}
-{% set version = "0.22.9" %}
-{% set sha256 = "8f82b54aa723a2848a56008d18875f91c1db02c32ef6a62319a002e3e25a975f" %}
+{% set version = "0.23.1" %}
+{% set sha256 = "8b805f246b32931c74f2b321ea0939fe5bb2ff43c12a3eff19cc4c854b832e1d" %}
 
 package:
   name: {{ name|lower }}
@@ -14,6 +14,7 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -32,7 +33,7 @@ test:
     - conftest.py
     - beartype_test
   commands:
-	# test skipped because of https://github.com/beartype/beartype/issues/620
+    # test skipped because of https://github.com/beartype/beartype/issues/620
     - pytest beartype_test --ignore="beartype_test/a00_unit/a00_core/test_a90_typing.py"
     - pip check
 
