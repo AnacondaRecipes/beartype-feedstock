@@ -1,9 +1,9 @@
 {% set name = "beartype" %}
-{% set version = "0.22.9" %}
-{% set sha256 = "8f82b54aa723a2848a56008d18875f91c1db02c32ef6a62319a002e3e25a975f" %}
+{% set version = "0.23.1" %}
+{% set sha256 = "8b805f246b32931c74f2b321ea0939fe5bb2ff43c12a3eff19cc4c854b832e1d" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -13,6 +13,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
@@ -30,10 +31,13 @@ test:
     - pip
   source_files:
     - conftest.py
+    - pytest.ini
     - beartype_test
+  imports:
+    - beartype
   commands:
-	# test skipped because of https://github.com/beartype/beartype/issues/620
-    - pytest beartype_test --ignore="beartype_test/a00_unit/a00_core/test_a90_typing.py"
+    # test_make_beartype_file_finder_path_hook_index is skipped, see https://github.com/beartype/beartype/issues/744
+    - pytest beartype_test -vv -k "not make_beartype_file_finder_path_hook_index"
     - pip check
 
 about:
